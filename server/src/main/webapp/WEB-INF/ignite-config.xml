@@ -4,7 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
     <bean id="grid" class="org.apache.ignite.IgniteSpringBean">
         <property name="configuration">
-            <bean class="org.apache.ignite.configuration.IgniteConfiguration"/>
+            <bean class="org.apache.ignite.configuration.IgniteConfiguration">
+                <property name="peerClassLoadingEnabled" value="true"/>
+            </bean>
         </property>
     </bean>
 </beans>

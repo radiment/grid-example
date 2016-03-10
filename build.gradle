@@ -23,6 +23,7 @@ configure(allprojects) {
 
 project(':node') {
     dependencies {
+        compile project(':model')
         compile 'org.apache.ignite:ignite-spring:1.5.0.final'
         compile 'org.apache.ignite:ignite-core:1.5.0.final'
         compile 'org.apache.ignite:ignite-indexing:1.5.0.final'
