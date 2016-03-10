@@ -1,3 +1,3 @@
 rootProject.name = 'grid-example'
 
-include "node"
+include "node", "server"
