@@ -8,13 +8,16 @@ import org.apache.ignite.lang.IgniteCallable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javax.cache.Cache;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.StreamSupport.stream;
 
@@ -62,6 +65,24 @@ public class MainController {
                 () -> stream(clients.localEntries(CachePeekMode.PRIMARY).spliterator(), false)
                         .mapToInt(value -> value.getValue().getBalance()).sum())
                 .stream().mapToInt(Integer::intValue).sum();
+    }
+
+    @GET
+    @Path("/clients/sums")
+    public Collection<Integer> sums() {
+        IgniteCache<Integer, Client> clients = ignite.cache("clients");
+        return ignite.compute().broadcast((IgniteCallable<Integer>)
+                () -> stream(clients.localEntries(CachePeekMode.PRIMARY).spliterator(), false)
+                        .mapToInt(value -> value.getValue().getBalance()).sum());
+    }
+
+    @GET
+    @Path("/clients/{type}")
+    public Collection<Client> clients(final @PathParam("type") String type) {
+        IgniteCache<Integer, Client> clients = ignite.cache("clients");
+        return ignite.compute().affinityCall("clients", type,
+                () -> stream(clients.localEntries(CachePeekMode.PRIMARY).spliterator(), false)
+                        .map(Cache.Entry::getValue).collect(Collectors.toList()));
     }
 
 }

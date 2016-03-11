@@ -12,19 +12,17 @@ public class NodeStart {
 
     public static void main(String[] args) {
         Ignite ignite = Ignition.start("config/ignite-config.xml");
-        initCache(args, ignite);
+        initCache(ignite);
     }
 
-    private static void initCache(String[] args, Ignite ignite) {
+    private static void initCache(Ignite ignite) {
         IgniteCache<Integer, Client> clients = ignite.cache("clients");
-        int start = Integer.parseInt(args[0]);
-        int end = Integer.parseInt(args[1]);
-        for (int i = start; i < end; i++) {
-            clients.put(i, client(i));
+        for (int i = 0; i < 30; i++) {
+            clients.putIfAbsent(i, client(i));
         }
     }
 
     private static Client client(int i) {
-        return new Client(i, random.nextInt(100000), "ph");
+        return new Client(i, random.nextInt(100000), "ph" + random.nextInt(5));
     }
 }

@@ -7,6 +7,25 @@
             <bean class="org.apache.ignite.configuration.IgniteConfiguration">
                 <property name="peerClassLoadingEnabled" value="true"/>
 
+                <property name="discoverySpi">
+                    <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                        <property name="ipFinder">
+                            <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
+                                <property name="addresses">
+                                    <list>
+                                        <!--
+                                            IP Address and optional port range of a remote node.
+                                            You can also optionally specify an individual port and don't set
+                                            the port range at all.
+                                        -->
+                                        <value>localhost:47500..47509</value>
+                                    </list>
+                                </property>
+                            </bean>
+                        </property>
+                    </bean>
+                </property>
+
                 <property name="cacheConfiguration">
                     <bean class="org.apache.ignite.configuration.CacheConfiguration">
                         <!-- Set a cache name. -->

@@ -1,5 +1,6 @@
 package com.epam.learning;
 
+import org.apache.ignite.cache.affinity.AffinityKeyMapped;
 import org.apache.ignite.cache.query.annotations.QuerySqlField;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ public class Client implements Serializable {
     @QuerySqlField
     private int balance;
     @QuerySqlField(index = true)
+    @AffinityKeyMapped
     private String type;
 
     public Client(int id, int balance, String type) {
