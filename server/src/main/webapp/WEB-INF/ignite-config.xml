@@ -6,6 +6,16 @@
         <property name="configuration">
             <bean class="org.apache.ignite.configuration.IgniteConfiguration">
                 <property name="peerClassLoadingEnabled" value="true"/>
+
+                <property name="cacheConfiguration">
+                    <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                        <!-- Set a cache name. -->
+                        <property name="name" value="clients"/>
+
+                        <property name="indexedTypes" value="java.lang.Integer,com.epam.learning.Client"/>
+
+                    </bean>
+                </property>
             </bean>
         </property>
     </bean>

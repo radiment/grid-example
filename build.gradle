@@ -1,5 +1,6 @@
 def jerseyVersion = '1.19'
 def springVersion = '4.2.4.RELEASE'
+def igniteVersion = '1.5.0.final'
 
 configure(allprojects) {
     group 'com.epam.learning'
@@ -21,12 +22,18 @@ configure(allprojects) {
     }
 }
 
+project(':model') {
+    dependencies {
+        compile "org.apache.ignite:ignite-core:$igniteVersion"
+    }
+}
+
 project(':node') {
     dependencies {
         compile project(':model')
-        compile 'org.apache.ignite:ignite-spring:1.5.0.final'
-        compile 'org.apache.ignite:ignite-core:1.5.0.final'
-        compile 'org.apache.ignite:ignite-indexing:1.5.0.final'
+        compile "org.apache.ignite:ignite-spring:$igniteVersion"
+        compile "org.apache.ignite:ignite-core:$igniteVersion"
+        compile "org.apache.ignite:ignite-indexing:$igniteVersion"
     }
 }
 
@@ -34,12 +41,13 @@ project(':server') {
     apply plugin: 'war'
 
     dependencies {
+        compile project(':model')
         compile "org.springframework:spring-web:$springVersion"
         compile("com.sun.jersey.contribs:jersey-spring:$jerseyVersion") {
             exclude group: 'org.springframework'
         }
-        compile 'org.apache.ignite:ignite-spring:1.5.0.final'
-        compile 'org.apache.ignite:ignite-web:1.5.0.final'
+        compile "org.apache.ignite:ignite-spring:$igniteVersion"
+        compile "org.apache.ignite:ignite-web:$igniteVersion"
         compile "com.sun.jersey:jersey-server:$jerseyVersion"
         compile "com.sun.jersey:jersey-servlet:$jerseyVersion"
         compile "com.sun.jersey:jersey-json:$jerseyVersion"

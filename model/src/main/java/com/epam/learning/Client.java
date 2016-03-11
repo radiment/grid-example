@@ -1,14 +1,19 @@
 package com.epam.learning;
 
-/**
- * Created by Yevgeniy_Vtulkin on 3/10/2016.
- */
-public class Client {
+import org.apache.ignite.cache.query.annotations.QuerySqlField;
+
+import java.io.Serializable;
+
+public class Client implements Serializable {
+
+    @QuerySqlField(index = true)
     private int id;
+    @QuerySqlField
     private int balance;
+    @QuerySqlField(index = true)
     private String type;
 
-    public Client(String type, int balance, int id) {
+    public Client(int id, int balance, String type) {
         this.type = type;
         this.balance = balance;
         this.id = id;
