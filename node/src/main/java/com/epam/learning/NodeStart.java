@@ -3,6 +3,7 @@ package com.epam.learning;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.Ignition;
+import org.apache.ignite.cache.affinity.AffinityKey;
 
 import java.util.Random;
 
@@ -16,9 +17,10 @@ public class NodeStart {
     }
 
     private static void initCache(Ignite ignite) {
-        IgniteCache<Integer, Client> clients = ignite.cache("clients");
+        IgniteCache<Object, Client> clients = ignite.cache("clients");
         for (int i = 0; i < 30; i++) {
-            clients.putIfAbsent(i, client(i));
+            Client client = client(i);
+            clients.putIfAbsent(new AffinityKey<>(i, client.getType()), client);
         }
     }
 

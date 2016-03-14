@@ -85,4 +85,14 @@ public class MainController {
                         .map(Cache.Entry::getValue).collect(Collectors.toList()));
     }
 
+    @GET
+    @Path("/clients/node/{node}")
+    public Collection<List<Client>> byNodes(final @PathParam("node") String node) {
+        IgniteCache<Integer, Client> clients = ignite.cache("clients");
+
+        return ignite.compute().broadcast((IgniteCallable<List<Client>>)
+                () -> stream(clients.localEntries(CachePeekMode.PRIMARY).spliterator(), false)
+                        .map(Cache.Entry::getValue).collect(Collectors.toList()));
+    }
+
 }
