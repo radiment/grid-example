@@ -31,6 +31,14 @@
 
                 <property name="indexedTypes" value="java.lang.Integer,com.epam.learning.Client"/>
 
+                <property name="cacheStoreFactory">
+                    <bean class="javax.cache.configuration.FactoryBuilder$SingletonFactory">
+                        <constructor-arg>
+                            <bean class="com.epam.learning.CacheJdbcClientStore"/>
+                        </constructor-arg>
+                    </bean>
+                </property>
+
             </bean>
         </property>
     </bean>
