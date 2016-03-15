@@ -7,6 +7,8 @@
             <bean class="org.apache.ignite.configuration.IgniteConfiguration">
                 <property name="peerClassLoadingEnabled" value="true"/>
 
+                <!--<property name="clientMode" value="true"/>-->
+
                 <property name="discoverySpi">
                     <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
                         <property name="ipFinder">

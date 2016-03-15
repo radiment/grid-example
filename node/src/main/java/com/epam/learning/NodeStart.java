@@ -11,16 +11,17 @@ public class NodeStart {
     private static final Random random = new Random();
 
     public static void main(String[] args) {
-        Ignition.start("config/ignite-config.xml");
-//        initCache(ignite);
+        Ignite ignite = Ignition.start("config/ignite-config.xml");
+        initCache(ignite);
     }
 
     private static void initCache(Ignite ignite) {
         IgniteCache<Object, Client> clients = ignite.cache("clients");
-        for (int i = 0; i < 30; i++) {
+        clients.loadCache(null, 10);
+        /*for (int i = 0; i < 30; i++) {
             Client client = client(i);
             clients.putIfAbsent(i, client);
-        }
+        }*/
     }
 
     private static Client client(int i) {

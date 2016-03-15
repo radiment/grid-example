@@ -39,6 +39,10 @@
                     </bean>
                 </property>
 
+                <property name="readThrough" value="true"/>
+
+                <property name="writeThrough" value="true"/>
+
             </bean>
         </property>
     </bean>

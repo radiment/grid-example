@@ -60,9 +60,9 @@ public class MainController {
     @GET
     @Path("/clients/sum")
     public int sum() {
-        IgniteCache<Integer, Client> clients = ignite.cache("clients");
         return ignite.compute().broadcast((IgniteCallable<Integer>)
-                () -> stream(clients.localEntries(CachePeekMode.PRIMARY).spliterator(), false)
+                () -> stream(ignite.<Object, Client>cache("clients")
+                        .localEntries(CachePeekMode.PRIMARY).spliterator(), false)
                         .mapToInt(value -> value.getValue().getBalance()).sum())
                 .stream().mapToInt(Integer::intValue).sum();
     }

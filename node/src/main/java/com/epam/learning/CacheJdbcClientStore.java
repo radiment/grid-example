@@ -9,9 +9,10 @@ import org.jetbrains.annotations.NotNull;
 import javax.cache.Cache;
 import javax.cache.integration.CacheLoaderException;
 import javax.cache.integration.CacheWriterException;
+import java.io.Serializable;
 import java.sql.*;
 
-public class CacheJdbcClientStore extends CacheStoreAdapter<Integer, Client> {
+public class CacheJdbcClientStore extends CacheStoreAdapter<Integer, Client> implements Serializable {
 
     @IgniteInstanceResource
     private Ignite ignite;
@@ -66,7 +67,6 @@ public class CacheJdbcClientStore extends CacheStoreAdapter<Integer, Client> {
     public void loadCache(IgniteBiInClosure<Integer, Client> clo, Object... args) {
         if (args == null || args.length == 0 || args[0] == null)
             throw new CacheLoaderException("Expected entry count parameter is not provided.");
-
         final int entryCnt = (Integer) args[0];
 
         try (Connection conn = connection()) {
