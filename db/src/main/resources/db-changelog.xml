@@ -12,7 +12,7 @@
     </preConditions>-->
 
     <changeSet id="1" author="Andrey Dyomin">
-        <createTable tableName="client">
+        <createTable tableName="clients">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

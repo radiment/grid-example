@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import javax.cache.Cache;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -93,6 +90,13 @@ public class MainController {
         return ignite.compute().broadcast((IgniteCallable<List<Client>>)
                 () -> stream(clients.localEntries(CachePeekMode.PRIMARY).spliterator(), false)
                         .map(Cache.Entry::getValue).collect(Collectors.toList()));
+    }
+
+    @POST
+    @Path("/clients")
+    @Consumes("application/json")
+    public boolean createClient(Client client) {
+        return ignite.cache("clients").putIfAbsent(client.getId(), client);
     }
 
 }

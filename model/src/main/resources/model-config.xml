@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="model.client" class="org.apache.ignite.cache.store.jdbc.JdbcType">
+        <property name="cacheName" value="clients"/>
+        <property name="databaseSchema" value="PUBLIC"/>
+        <property name="databaseTable" value="CLIENTS"/>
+        <property name="keyType" value="java.lang.Integer"/>
+        <property name="valueType" value="com.epam.learning.Client"/>
+        <property name="keyFields">
+            <list>
+                <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
+                    <property name="databaseFieldType">
+                        <util:constant static-field="java.sql.Types.INTEGER"/>
+                    </property>
+                    <property name="databaseFieldName" value="ID"/>
+                    <property name="javaFieldType" value="int"/>
+                    <property name="javaFieldName" value="id"/>
+                </bean>
+            </list>
+        </property>
+        <property name="valueFields">
+            <list>
+                <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
+                    <property name="databaseFieldType">
+                        <util:constant static-field="java.sql.Types.INTEGER"/>
+                    </property>
+                    <property name="databaseFieldName" value="ID"/>
+                    <property name="javaFieldType" value="int"/>
+                    <property name="javaFieldName" value="id"/>
+                </bean>
+                <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
+                    <property name="databaseFieldType">
+                        <util:constant static-field="java.sql.Types.INTEGER"/>
+                    </property>
+                    <property name="databaseFieldName" value="BALANCE"/>
+                    <property name="javaFieldType" value="java.lang.Integer"/>
+                    <property name="javaFieldName" value="balance"/>
+                </bean>
+                <bean class="org.apache.ignite.cache.store.jdbc.JdbcTypeField">
+                    <property name="databaseFieldType">
+                        <util:constant static-field="java.sql.Types.VARCHAR"/>
+                    </property>
+                    <property name="databaseFieldName" value="TYPE"/>
+                    <property name="javaFieldType" value="java.lang.String"/>
+                    <property name="javaFieldName" value="type"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+</beans>

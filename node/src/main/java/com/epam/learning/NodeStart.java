@@ -17,7 +17,7 @@ public class NodeStart {
 
     private static void initCache(Ignite ignite) {
         IgniteCache<Object, Client> clients = ignite.cache("clients");
-        clients.loadCache(null, 10);
+        clients.loadCache(null, "java.lang.Integer", "select * from PUBLIC.CLIENTS");
         /*for (int i = 0; i < 30; i++) {
             Client client = client(i);
             clients.putIfAbsent(i, client);

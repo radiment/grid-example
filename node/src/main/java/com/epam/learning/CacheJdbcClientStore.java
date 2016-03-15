@@ -20,7 +20,7 @@ public class CacheJdbcClientStore extends CacheStoreAdapter<Integer, Client> imp
     @Override
     public Client load(Integer key) throws CacheLoaderException {
         try (Connection conn = connection()) {
-            try (PreparedStatement st = conn.prepareStatement("SELECT * from CLIENT WHERE ID=?1")) {
+            try (PreparedStatement st = conn.prepareStatement("SELECT * from CLIENTS WHERE ID=?1")) {
                 st.setInt(1, key);
                 try (ResultSet resultSet = st.executeQuery()) {
                     if (resultSet.next()) {
@@ -39,7 +39,7 @@ public class CacheJdbcClientStore extends CacheStoreAdapter<Integer, Client> imp
     @Override
     public void write(Cache.Entry<? extends Integer, ? extends Client> entry) throws CacheWriterException {
         try (Connection conn = connection()) {
-            try (PreparedStatement st = conn.prepareStatement("MERGE INTO CLIENT (ID, BALANCE, TYPE) VALUES (?1, ?2, ?3)")) {
+            try (PreparedStatement st = conn.prepareStatement("MERGE INTO CLIENTS (ID, BALANCE, TYPE) VALUES (?1, ?2, ?3)")) {
                 Client client = entry.getValue();
                 st.setInt(1, client.getId());
                 st.setInt(2, client.getBalance());
@@ -54,7 +54,7 @@ public class CacheJdbcClientStore extends CacheStoreAdapter<Integer, Client> imp
     @Override
     public void delete(Object key) throws CacheWriterException {
         try (Connection conn = connection()) {
-            try (PreparedStatement st = conn.prepareStatement("DELETE from CLIENT WHERE ID=?1")) {
+            try (PreparedStatement st = conn.prepareStatement("DELETE from CLIENTS WHERE ID=?1")) {
                 st.setInt(1, (Integer) key);
                 st.executeUpdate();
             }
@@ -70,7 +70,7 @@ public class CacheJdbcClientStore extends CacheStoreAdapter<Integer, Client> imp
         final int entryCnt = (Integer) args[0];
 
         try (Connection conn = connection()) {
-            try (PreparedStatement st = conn.prepareStatement("select * from CLIENT")) {
+            try (PreparedStatement st = conn.prepareStatement("select * from CLIENTS")) {
                 try (ResultSet rs = st.executeQuery()) {
                     int cnt = 0;
 

@@ -16,6 +16,7 @@ configure(allprojects) {
     }
 
     dependencies {
+        compile "com.h2database:h2:$h2Version"
         compile 'org.slf4j:jcl-over-slf4j:1.7.18'
         compile 'org.apache.logging.log4j:log4j-core:2.5'
         compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.5'
@@ -27,7 +28,6 @@ configure(allprojects) {
 project(':db') {
     dependencies {
         compile "org.liquibase:liquibase-core:3.4.2";
-        compile "com.h2database:h2:$h2Version"
     }
 }
 
@@ -40,7 +40,6 @@ project(':model') {
 project(':node') {
     dependencies {
         compile project(':model')
-        compile "com.h2database:h2:$h2Version"
         compile "org.apache.ignite:ignite-spring:$igniteVersion"
         compile "org.apache.ignite:ignite-core:$igniteVersion"
         compile "org.apache.ignite:ignite-indexing:$igniteVersion"
