@@ -24,7 +24,7 @@
     </changeSet>
 
     <changeSet id="2" author="Andrey Dyomin">
-        <loadUpdateData primaryKey="id" tableName="client" file="data.csv"/>
+        <loadUpdateData primaryKey="id" tableName="clients" file="data.csv"/>
     </changeSet>
 
 </databaseChangeLog>

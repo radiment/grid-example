@@ -5,6 +5,10 @@ import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteCache;
 import org.apache.ignite.cache.CachePeekMode;
 import org.apache.ignite.lang.IgniteCallable;
+import org.apache.ignite.transactions.Transaction;
+import org.apache.ignite.transactions.TransactionConcurrency;
+import org.apache.ignite.transactions.TransactionIsolation;
+import org.apache.ignite.transactions.TransactionOptimisticException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -97,6 +101,63 @@ public class MainController {
     @Consumes("application/json")
     public boolean createClient(Client client) {
         return ignite.cache("clients").putIfAbsent(client.getId(), client);
+    }
+
+    @GET
+    @Path("/transactions/long/{balance}")
+    public boolean longTransaction(@PathParam("balance") Integer balance) throws InterruptedException {
+        try (Transaction tx = ignite.transactions().txStart(
+                TransactionConcurrency.PESSIMISTIC,
+                TransactionIsolation.READ_COMMITTED)) {
+            IgniteCache<Integer, Client> clients = ignite.cache("clients");
+            clients.put(999, new Client(999, balance, "X"));
+
+            System.out.println(">>>>>>>>>>>> pre-committed");
+
+            Thread.sleep(50000);
+            tx.rollback();
+//                tx.commit();
+            System.out.println(">>>>>>>>>>>> committed");
+        } catch (TransactionOptimisticException e) {
+            e.printStackTrace();
+        }
+
+        return true;
+
+    }
+
+    @GET
+    @Path("/transactions")
+    public Collection<Client> trans() {
+        IgniteCache<Integer, Client> clients = ignite.cache("clients");
+        List<Client> obtainedObjects = new ArrayList<>();
+
+        try (Transaction tx = ignite.transactions().txStart(
+                TransactionConcurrency.OPTIMISTIC,
+                TransactionIsolation.READ_COMMITTED)) {
+            Client client = clients.get(999);
+            obtainedObjects.add(client);
+//            tx.commit();
+        } catch (TransactionOptimisticException e) {
+            e.printStackTrace();
+        }
+
+/*
+        try (Transaction tx = ignite.transactions().txStart(
+                TransactionConcurrency.PESSIMISTIC,
+                TransactionIsolation.SERIALIZABLE)) {
+            Client client = clients.get(999);
+            obtainedObjects.add(client);
+//            tx.commit();
+        } catch (TransactionOptimisticException e) {
+            e.printStackTrace();
+        }
+*/
+
+        Client client = clients.get(999);
+        obtainedObjects.add(client);
+
+        return obtainedObjects;
     }
 
 }

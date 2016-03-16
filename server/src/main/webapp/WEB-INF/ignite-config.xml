@@ -40,6 +40,8 @@
                         <!-- Set a cache name. -->
                         <property name="name" value="clients"/>
 
+                        <property name="atomicityMode" value="TRANSACTIONAL"/>
+
                         <property name="indexedTypes" value="java.lang.Integer,com.epam.learning.Client"/>
 
                         <property name="cacheStoreFactory">
@@ -56,6 +58,8 @@
                         <property name="readThrough" value="true"/>
 
                         <property name="writeThrough" value="true"/>
+
+                        <property name="backups" value="1"/>
 
                     </bean>
                 </property>
